@@ -84,10 +84,22 @@ Ktorm는 Exposed과 같은 ORM 라이브러리이다. 하지만 차이점이 존
 
 코틀린에서는 object 키워드를 통해 싱글톤 객체를 구현할 수 있지만 DI 프레임워크를 사용하는게 좋다.
 
+> https://insert-koin.io/docs/setup/koin/
+
 - **Koin**
 
 ```gradle
 implementation("io.insert-koin:koin-ktor:{버전}")
 implementation("io.insert-koin:koin-ksp-compiler:{버전}")
 runtimeOnly("io.insert-koin:koin-annotations:{버전}")
+```
+
+### 7. `Other`
+
+- **Reqeust Validation**
+
+요청의 바디를 검증해주는 플러그인
+
+```gradle
+implementation("io.ktor:ktor-server-request-validation:$ktor_version")
 ```
