@@ -10,6 +10,54 @@
 
 `Authentication`은 `Basic` , `JWT`, `Session`등을 포함한 번들 플러그인이다. 전부 필요하면 추가하고 아니라면 필요한 부분만 추가하도록
 
+
+### 커스텀 Plugin
+
+```kotlin
+fun Route.withAuth(tokenType: TokenType, route: Route.() -> Unit): Route {
+  val child = createChild(AuthRouter(tokenType)).apply {
+    install(JwtAuthPlugin) { this.tokenType = tokenType }
+    route()
+  }
+  return child
+}
+
+
+private val userIdKey = AttributeKey<UUID>("userId")
+fun ApplicationCall.getUserId(): UUID = attributes[userIdKey]
+
+class AuthRouter(val tokenType: TokenType) : RouteSelector() {
+  override fun evaluate(context: RoutingResolveContext, segmentIndex: Int): RouteSelectorEvaluation =
+    RouteSelectorEvaluation.Transparent
+  
+  override fun toString(): String {
+    return "(${tokenType.name})"
+  }
+}
+
+class AuthPluginConfiguration {
+  lateinit var tokenType: TokenType
+}
+
+val JwtAuthPlugin = createRouteScopedPlugin(
+  name = "JwtAuthPlugin",
+  createConfiguration = ::AuthPluginConfiguration
+) {
+  pluginConfig.apply {
+    val config = applicationConfig !!
+    val logger = LoggerFactory.getLogger("JwtAuthPlugin")
+
+    // 로직 작성
+    
+    onCall { call ->
+      
+      // 로직 작성
+    }
+  }
+  
+}
+```
+
 ---
 
 ### 2. `Routing`
