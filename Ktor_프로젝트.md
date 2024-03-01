@@ -22,9 +22,9 @@ fun Route.withAuth(tokenType: TokenType, route: Route.() -> Unit): Route {
   return child
 }
 
-
-private val userIdKey = AttributeKey<UUID>("userId")
-fun ApplicationCall.getUserId(): UUID = attributes[userIdKey]
+// 유저 ID를 입력
+private val userIdKey = AttributeKey<{유저 id 타입}>("userId")
+fun ApplicationCall.getUserId(): {유저 id 타입} = attributes[userIdKey]
 
 class AuthRouter(val tokenType: TokenType) : RouteSelector() {
   override fun evaluate(context: RoutingResolveContext, segmentIndex: Int): RouteSelectorEvaluation =
