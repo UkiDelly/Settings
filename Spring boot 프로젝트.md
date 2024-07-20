@@ -90,8 +90,6 @@ dependecy {
 }
 ```
 
----
-
 ## Spring JPA 관련 추가 설정
 
 `JPA`를 사용중이라면 해당 설정도 추가해야함
@@ -131,4 +129,42 @@ noArg {
   annotation("jakarta.persistence.Embeddable")
   annotation("jakarta.persistence.MappedSuperclass")
 }
+```
+
+## QueryDSL
+
+QueryDSL는 코틀린에서 사용할수 없고 자바 프로젝트에서만 사용이 가능하다.
+
+다음 디펜던시를 추가해서 QueryDSL을 프로젝트 추가할수 있다.
+
+```groovy
+dependencies {
+  ...
+  implementation 'com.querydsl:querydsl-jpa:${querydsl_version}:jakarta'
+  annotationProcessor 'com.querydsl:querydsl-apt:${querydsl_version}:jakarta'
+  annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+  ...
+}
+
+// QueryDSL generated sources setting
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory = file("src/main/generated")
+}
+
+
+// add QClass in sourceSets
+sourceSets {
+    main {
+        java {
+            srcDirs += "src/main/generated"
+        }
+    }
+}
+
+// clean generated sources when clean task is executed
+clean {
+    delete fileTree('src/main/generated')
+}
+
+
 ```
